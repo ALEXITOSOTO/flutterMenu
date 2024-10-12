@@ -33,4 +33,33 @@ class DbConnection {
     final db = await getDatabase();
     return db.insert(table, data, conflictAlgorithm: ConflictAlgorithm.replace);
   }
+
+  //Creando la fucnion actualizar
+  static Future<int> actualizar(String table, dynamic data, int id) async {
+    final db = await getDatabase();
+    return db.update(table, data,
+        where: 'id = ?',
+        whereArgs: [id],
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  //Creando funcion para eliminar
+  static Future<int> eliminar(String table, int id) async {
+    final db = await getDatabase();
+    return db.delete(table, where: 'id = ?', whereArgs: [id]);
+  }
+
+  //Creando la fucnion para seleccionar
+  static Future<List<Map<String, dynamic>>> listar(String table) async {
+    // Es como si hicieramos Select * from productos
+    final db = await getDatabase();
+    return await db.query(table);
+  }
+
+  //Filtrado
+  static Future<List<Map<String, dynamic>>> filtrar(
+      String table, String where, dynamic whereArgs) async {
+    final db = await getDatabase();
+    return await db.query(table, where: where, whereArgs: whereArgs);
+  }
 }
